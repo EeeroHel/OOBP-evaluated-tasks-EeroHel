@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+
+<style>
+
+    #button {
+        display: flex;
+        height: 60px;
+        width: 100px;
+        position: fixed;
+        bottom: 20px;
+        right: 30px;
+    }
+
+    #button2 {
+        display: flex;
+        height: 60px;
+        width: 100px;
+        position: fixed;
+        bottom: 20px;
+        right: 200px;
+    }
+
+    .game {
+        width: 400px;
+        height: 400px;
+        border: 1px solid black;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .game > img {
+        width: 200px
+    }
+    
+    #grid {
+    
+        display: grid;
+        grid-template-columns: 400px 400px 400px;
+        column-gap: 40px;
+        row-gap: 40px;
+
+    }
+    .resetter {
+        position: fixed;
+        top: 20px;
+        right: 30px;
+        
+    }
+
+    .shoppingCart {
+        position: fixed;
+        top: 20px;
+        right: 200px;
+    }
+
+</style>
+<head>
+    <header>Game Shop</header>
+    <body onload="start()">
+    <button class="resetter"onclick="reset()">Clear Shopping Cart</button>
+    <button class="shoppingCart"onclick="cart()">Go to shopping cart</button>
+    <div id ="grid">
+        </div>
+    </div>
+    </body>
+
+    <script>
+    let totalPrice = 0
+    let shoppingCart = []
+
+    
+        
+
+        const data = [
+            {
+                id: 1,
+                price: 40,
+                name: "Dark Souls Remastered",
+                agerestr: "16+",
+                image: "https://upload.wikimedia.org/wikipedia/en/8/8d/Dark_Souls_Cover_Art.jpg",
+                genre: "RPG",
+                description: "A spiritual successor to FromSoftware's Demon's Souls, the game is the second installment in the Souls series. Dark Souls takes place in the kingdom of Lordran, where players assume the role of a cursed undead character who begins a pilgrimage to discover the fate of their kind.",
+            },
+            {
+                id: 2,
+                price: 20,
+                name: "Minecraft",
+                agerestr: "7+",
+                image: "https://image.api.playstation.com/vulcan/img/cfn/11307x4B5WLoVoIUtdewG4uJ_YuDRTwBxQy0qP8ylgazLLc01PBxbsFG1pGOWmqhZsxnNkrU3GXbdXIowBAstzlrhtQ4LCI4.png",
+                genre: "Sandbox",
+                description: "Minecraft is a video game in which players create and break apart various kinds of blocks in three-dimensional worlds. The game's two main modes are Survival and Creative. In Survival, players must find their own building supplies and food. They also interact with blocklike mobs, or moving creatures.",
+            },
+            {
+                id: 3,
+                price: 20,
+                name: "CS:GO",
+                agerestr: "16+",
+                image: "http://media.steampowered.com/apps/csgo/blog/images/fb_image.png?v=6",
+                genre: "Shooter",
+                description: "Counter-Strike: Global Offensive (CS:GO) is a multiplayer first-person shooter developed by Valve and Hidden Path Entertainment. It is the fourth game in the Counter-Strike series. ... The game pits two teams, Terrorists and Counter-Terrorists, against each other in different objective-based game modes.",
+            },
+            {
+                id: 4,
+                price: 60,
+                name: "Sekiro: Shadows Die Twice",
+                agerestr: "17+",
+                image: "https://image.api.playstation.com/vulcan/img/rnd/202010/2723/knxU5uU5aKvQChKX5OvWtSGC.png",
+                genre: "RPG",
+                description: "Sekiro: Shadows Die Twice is a 2019 action-adventure game developed by FromSoftware and published by Activision. The game follows a shinobi known as Wolf as he attempts to take revenge on a samurai clan who attacked him and kidnapped his lord.",
+            },
+            {
+                id: 5,
+                price: 16.80,
+                name: "Valheim",
+                agerestr: "12+",
+                image: "https://www.konsolifin.net/sites/default/files/styles/banneri/public/Valheimlogo.jpg?itok=-Fb-Cx6Z",
+                genre: "Adventure",
+                description: "Valheim is an early access, indie survival game that's inspired by Viking culture. It's an open-world survival and crafting game with both single-player and co-op PvE (player vs environment) mechanics.",
+            },
+            {id: 6,
+                price: 40,
+                name: "Hearts of Iron 4, Cadet edition",
+                agerestr: "12+",
+                image: "https://cdn.cloudflare.steamstatic.com/steam/apps/394360/capsule_616x353.jpg?t=1637683588",
+                genre: "Strategy",
+                description: "Hearts of Iron IV is a grand strategy wargame that primarily revolves around World War II. The player may play as any nation in the world in the 1936 or 1939 start dates in singleplayer or multiplayer, although the game is not designed to go beyond 1950.",
+            },
+            {
+                id: 7,
+                price: 23,
+                name: "The Jackbox party pack 3",
+                agerestr: "9+",
+                image: "https://cdn.shopify.com/s/files/1/2324/9547/products/Titled_Hero_1024x1024@2x.png?v=1553700487",
+                genre: "Party",
+                description: "The threequel to the party game phenomenon features the deadly quiz show Trivia Murder Party, the say-anything sequel Quiplash 2, the surprising survey game Guesspionage, the t-shirt slugfest Tee K.O., and the sneaky trickster game Fakin' It.",
+            },
+            {
+                id: 8,
+                price: 60,
+                name: "Elden Ring",
+                agerestr: "16+",
+                image: "https://p325k7wa.twic.pics/high/elden-ring/elden-ring/00-page-setup/elden-ring-new-header-mobile.jpg?twic=v1/cover=760x844/step=10/quality=80",
+                genre: "Open World",
+                description: "Elden Ring is an action role-playing game played in a third-person perspective and features elements similar to those found in its predecessors, the Souls series as well as Bloodborne and Sekiro: Shadows Die Twice, with gameplay focusing on combat and exploration.",
+            },
+            {
+                id: 9,
+                price: 13,
+                name: "Jump King",
+                agerestr: "9+",
+                image: "https://cdn.cloudflare.steamstatic.com/steam/apps/1061090/header.jpg?t=1644307744",
+                genre: "Platformer",
+                description: "Description. ”Tactical Leaping Adventure - Jump King: There is a Smoking Hot Babe at the Top!” is a platforming challenge about struggling upwards in search of the legendary Smoking Hot Babe! This lonely adventure to reach The Top will demand your full mastery of the technique of jumping.",
+            }
+
+        ]
+
+        function showDetails(product) {
+            let target = document.getElementById("grid");
+            target.innerHTML= `
+            <div>
+                <div>${product.name}</div> 
+                <img src= ${product.image}>
+                <div>${product.price}€</div>
+                <div>${product.genre}</div>
+                <div>${product.agerestr}</div>
+                <div>${product.description}</div>
+            </div>
+            <button id = "button" onclick ="start()">Back to main page</button>
+            <button id = "button2" onclick = "adder()">Add to shopping cart</button>
+            `;
+            document.getElementById('button2').onclick = function() {
+            shoppingCart.push(product.price);
+            totalPrice = parseInt(totalPrice) + parseInt(product.price) + "€"
+            console.log(shoppingCart);
+            console.log(totalPrice);
+            }
+        }
+
+        function start() {
+            let target = document.getElementById("grid");
+            target.innerHTML = "";
+
+            for(let i = 0; i < data.length; i++){
+            let newUserElement = document.createElement("div");
+            newUserElement.className = "game";
+            newUserElement.textContent = data[i].name + " " + data[i].price + "€";
+            newUserElement.onclick = () => showDetails(data[i]);
+            target.appendChild(newUserElement);
+            }
+            
+            
+        }
+
+        function reset(){
+        shoppingCart = [];
+        totalPrice = 0 + "€"
+        console.log(shoppingCart);
+    }
+    //Couldn't get the shopping cart to show the class from data correctly, but at least it records it. The best I could do was the price of the product. 
+    function cart() {
+        let target = document.getElementById("grid");
+        for(i = 0; i < shoppingCart.length/4; i++)
+        console.log(i);
+        target.innerHTML= `
+        <div>
+        <div>${shoppingCart} </div>
+        <div>Your total amount is${totalPrice}</div>
+        <div>Do you wish to pay?</div>
+        <button id = button3 onclick "payday()">Confirm payment</button>
+        </div>
+        <button id = "button" onclick ="start()">Back to main page</button>
+    `;
+        
+    }
+
+   
+
+    </script>
+
+
+</head>
